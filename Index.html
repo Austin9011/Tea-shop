@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaf & Steep — Tea Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #1C2B26;
+    --parchment: #FAF8F3;
+    --sage: #7C9885;
+    --sage-dark: #5C7A5E;
+    --amber: #C08A3E;
+    --charcoal: #2A2A28;
+    --line: #E4DFD3;
+    --white: #FFFFFF;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--parchment); color: var(--charcoal); font-family: 'Inter', sans-serif; line-height: 1.55; }
+h1, h2, h3 { font-family: 'Fraunces', serif; color: var(--navy); margin: 0 0 0.5em; font-weight: 600; }
+a { color: var(--navy); text-decoration: none; cursor: pointer; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.hidden { display: none !important; }
+
+/* Header */
+.site-header { background: var(--navy); border-bottom: 3px solid var(--sage); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; max-width: 1080px; margin: 0 auto; }
+.logo { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700; color: var(--parchment); }
+.main-nav a { color: var(--parchment); margin-left: 28px; font-size: 0.95rem; position: relative; }
+.cart-badge { background: var(--amber); color: var(--navy); font-size: 0.7rem; font-weight: 600; padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
+
+/* Hero */
+.hero { padding: 64px 24px 36px; max-width: 720px; }
+.hero h1 { font-size: 2.4rem; line-height: 1.15; }
+.hero-sub { font-size: 1.05rem; color: #4A4A46; max-width: 60ch; }
+
+/* Product grid */
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-bottom: 72px; }
+.product-card { background: var(--white); border: 1px solid var(--line); display: flex; flex-direction: column; }
+.product-card.featured { grid-column: span 2; flex-direction: row; }
+.product-card.featured .product-swatch { width: 45%; aspect-ratio: auto; }
+.product-swatch { display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; color: var(--white); }
+.swatch-initial { font-family: 'Fraunces', serif; font-size: 2.4rem; opacity: 0.85; }
+.product-info { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
+.product-info h2 { font-size: 1.15rem; margin-bottom: 6px; }
+.product-desc { color: #5A5A54; font-size: 0.9rem; flex-grow: 1; }
+.product-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+.price { font-family: 'Fraunces', serif; font-weight: 600; color: var(--amber); font-size: 1.05rem; }
+.price.large { font-size: 1.6rem; }
+.stock-out { color: #A85C5C; font-size: 0.85rem; font-style: italic; }
+
+/* Buttons */
+.btn { background: var(--sage); color: var(--white); border: none; padding: 9px 16px; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; }
+.btn:hover { background: var(--sage-dark); }
+.btn-checkout { display: inline-block; padding: 12px 26px; font-size: 1rem; margin-top: 20px; }
+.btn-remove { background: none; border: none; color: #A85C5C; cursor: pointer; font-size: 0.85rem; text-decoration: underline; padding: 0; }
+.btn-secondary { background: none; border: 1px solid var(--line); color: var(--navy); }
+.btn-secondary:hover { background: var(--white); }
+
+/* Cart / checkout panels */
+.page-section { padding: 48px 24px 90px; }
+.cart-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+.cart-table th { text-align: left; font-size: 0.8rem; color: #8A8A82; border-bottom: 1px solid var(--line); padding: 10px 8px; }
+.cart-table td { padding: 14px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.mini-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+.qty-input { width: 56px; padding: 6px; border: 1px solid var(--line); font-family: 'Inter', sans-serif; }
+.cart-summary { display: flex; justify-content: space-between; align-items: center; max-width: 320px; margin-left: auto; padding-top: 16px; border-top: 2px solid var(--navy); font-family: 'Fraunces', serif; }
+.checkout-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; margin-top: 24px; }
+.checkout-form label { display: block; margin-top: 16px; margin-bottom: 6px; font-size: 0.85rem; color: #5A5A54; }
+.checkout-form input, .checkout-form textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); background: var(--white); font-family: 'Inter', sans-serif; font-size: 0.95rem; }
+.order-summary { background: var(--white); border: 1px solid var(--line); padding: 22px; align-self: start; }
+.order-summary ul { list-style: none; padding: 0; margin: 0; }
+.order-summary li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+.form-errors { background: #FBEAEA; border: 1px solid #E3B3B3; color: #963434; padding: 12px 16px; margin: 16px 0; font-size: 0.9rem; }
+.back-link { display: inline-block; margin-top: 20px; font-size: 0.9rem; color: var(--sage-dark); }
+
+.site-footer { border-top: 1px solid var(--line); padding: 24px; margin-top: 20px; text-align: center; color: #8A8A82; font-size: 0.85rem; }
+
+@media (max-width: 860px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-card.featured { grid-column: span 2; flex-direction: column; }
+    .product-card.featured .product-swatch { width: 100%; }
+    .checkout-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.9rem; }
+    .header-inner { flex-wrap: wrap; gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a class="logo" onclick="showPage('shop')">Leaf &amp; Steep</a>
+        <nav class="main-nav">
+            <a onclick="showPage('shop')">Shop</a>
+            <a onclick="showPage('cart')">Cart <span class="cart-badge hidden" id="cart-badge">0</span></a>
+        </nav>
+    </div>
+</header>
+
+<main class="wrap">
+
+    <!-- SHOP PAGE -->
+    <section id="page-shop">
+        <div class="hero">
+            <h1>Tea, steeped in patience.</h1>
+            <p class="hero-sub">Small-batch leaves sourced direct from six family farms. No shortcuts, no fillers — just what grew in the ground.</p>
+        </div>
+        <div class="product-grid" id="product-grid"></div>
+    </section>
+
+    <!-- CART PAGE -->
+    <section id="page-cart" class="page-section hidden">
+        <h1>Your Cart</h1>
+        <div id="cart-empty" class="hidden">
+            <p>Your cart is empty. <a onclick="showPage('shop')">Browse the shop</a>.</p>
+        </div>
+        <div id="cart-content" class="hidden">
+            <table class="cart-table">
+                <thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+                <tbody id="cart-rows"></tbody>
+            </table>
+            <div class="cart-summary"><span>Total</span><span class="price large" id="cart-total">$0.00</span></div>
+            <button class="btn btn-checkout" onclick="showPage('checkout')">Proceed to checkout</button>
+        </div>
+    </section>
+
+    <!-- CHECKOUT PAGE -->
+    <section id="page-checkout" class="page-section hidden">
+        <h1>Checkout</h1>
+        <div id="checkout-errors" class="form-errors hidden"></div>
+        <div class="checkout-layout">
+            <form class="checkout-form" id="checkout-form" onsubmit="return placeOrder(event)">
+                <label for="name">Full name</label>
+                <input type="text" id="name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+                <label for="phone">Phone (optional)</label>
+                <input type="text" id="phone">
+                <label for="address">Delivery address</label>
+                <textarea id="address" rows="3" required></textarea>
+                <button type="submit" class="btn btn-checkout">Place order — <span id="checkout-total">$0.00</span></button>
+            </form>
+            <aside class="order-summary">
+                <h2>Order summary</h2>
+                <ul id="checkout-items"></ul>
+                <div class="cart-summary"><span>Total</span><span class="price large" id="checkout-total-2">$0.00</span></div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- SUCCESS PAGE -->
+    <section id="page-success" class="page-section hidden">
+        <h1>Thank you, <span id="success-name"></span>.</h1>
+        <p class="hero-sub">Your order <strong>#<span id="success-order-id"></span></strong> has been placed and a confirmation will be sent to <span id="success-email"></span>.</p>
+        <ul class="order-summary" id="success-items" style="list-style:none; padding:22px; background:var(--white); border:1px solid var(--line); max-width:480px;"></ul>
+        <a class="back-link" onclick="showPage('shop')">&larr; Continue shopping</a>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    &copy; 2026 Leaf &amp; Steep. Small-batch tea, sourced with care. (Demo shop — no real orders are sent.)
+</footer>
+
+<script>
+// ---- Product data (in-memory; edit this array to change your catalog) ----
+// To add a photo: paste a URL (e.g. 'https://example.com/jade.jpg') or a
+// local path (e.g. 'images/jade-oolong.jpg') into that product's "image"
+// field below. Leave it as null to keep the plain color swatch.
+const PRODUCTS = [
+    { id: 1, name: 'Jade Oolong', price: 14.50, stock: 40, color: '#7C9885', image: "images/Jade Oolong.webp", desc: 'A lightly roasted oolong with a smooth, floral finish and notes of orchid.' },
+    { id: 2, name: 'Midnight Pu-erh', price: 18.00, stock: 25, color: '#3F3A34', image: "images/Midnight Pu-erh.webp", desc: 'Aged pu-erh with deep, earthy character. Best after dinner.' },
+    { id: 3, name: 'Silver Needle White', price: 22.00, stock: 15, color: '#C9C3B4', image: "images/Silver Needle White.webp", desc: 'Delicate white tea made from unopened buds. Subtly sweet.' },
+    { id: 4, name: 'Amber Chai Blend', price: 12.00, stock: 60, color: '#C08A3E', image: "images/Amber Chai Blend.jpg", desc: 'Black tea with cinnamon, cardamom, ginger and clove.' },
+    { id: 5, name: 'Sencha Reserve', price: 16.75, stock: 30, color: '#5C7A52', image: "images/Sencha Reserve.webp", desc: 'Shade-grown Japanese green tea, grassy and umami-rich.' },
+    { id: 6, name: 'Rose Hibiscus Tisane', price: 11.25, stock: 45, color: '#A85C5C', image: "images/Rose Hibiscus Tisane.jpg", desc: 'Caffeine-free blend of hibiscus, rose petals and apple.' },
+];
+
+// cart = { productId: quantity }  — lives only in memory for this session
+let cart = {};
+let orderCounter = 1000;
+
+function formatPrice(n) { return '$' + n.toFixed(2); }
+
+function renderProducts() {
+    const grid = document.getElementById('product-grid');
+    grid.innerHTML = PRODUCTS.map((p, i) => `
+        <article class="product-card ${i === 0 ? 'featured' : ''}">
+            ${p.image
+                ? `<div class="product-swatch" style="padding:0;"><img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"></div>`
+                : `<div class="product-swatch" style="background-color:${p.color};"><span class="swatch-initial">${p.name.charAt(0)}</span></div>`}
+            <div class="product-info">
+                <h2>${p.name}</h2>
+                <p class="product-desc">${p.desc}</p>
+                <div class="product-meta">
+                    <span class="price">${formatPrice(p.price)}</span>
+                    ${p.stock <= 0
+                        ? '<span class="stock-out">Sold out</span>'
+                        : `<button class="btn" onclick="addToCart(${p.id})">Add to cart</button>`}
+                </div>
+            </div>
+        </article>
+    `).join('');
+}
+
+function addToCart(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    updateCartBadge();
+}
+
+function updateQty(id, qty) {
+    qty = parseInt(qty, 10);
+    if (isNaN(qty) || qty <= 0) { delete cart[id]; } else { cart[id] = qty; }
+    updateCartBadge();
+    renderCart();
+}
+
+function removeFromCart(id) {
+    delete cart[id];
+    updateCartBadge();
+    renderCart();
+}
+
+function cartItems() {
+    return Object.keys(cart).map(id => {
+        const p = PRODUCTS.find(prod => prod.id === parseInt(id, 10));
+        const quantity = cart[id];
+        return { ...p, quantity, subtotal: p.price * quantity };
+    });
+}
+
+function cartTotal() {
+    return cartItems().reduce((sum, item) => sum + item.subtotal, 0);
+}
+
+function updateCartBadge() {
+    const count = Object.values(cart).reduce((a, b) => a + b, 0);
+    const badge = document.getElementById('cart-badge');
+    if (count > 0) { badge.textContent = count; badge.classList.remove('hidden'); }
+    else { badge.classList.add('hidden'); }
+}
+
+function renderCart() {
+    const items = cartItems();
+    document.getElementById('cart-empty').classList.toggle('hidden', items.length > 0);
+    document.getElementById('cart-content').classList.toggle('hidden', items.length === 0);
+
+    document.getElementById('cart-rows').innerHTML = items.map(item => `
+        <tr>
+            <td><span class="mini-swatch" style="background-color:${item.color};"></span>${item.name}</td>
+            <td>${formatPrice(item.price)}</td>
+            <td><input type="number" class="qty-input" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQty(${item.id}, this.value)"></td>
+            <td>${formatPrice(item.subtotal)}</td>
+            <td><button class="btn-remove" onclick="removeFromCart(${item.id})">Remove</button></td>
+        </tr>
+    `).join('');
+
+    document.getElementById('cart-total').textContent = formatPrice(cartTotal());
+}
+
+function renderCheckout() {
+    const items = cartItems();
+    const total = cartTotal();
+    document.getElementById('checkout-items').innerHTML = items.map(item =>
+        `<li>${item.name} &times; ${item.quantity} <span>${formatPrice(item.subtotal)}</span></li>`
+    ).join('');
+    document.getElementById('checkout-total').textContent = formatPrice(total);
+    document.getElementById('checkout-total-2').textContent = formatPrice(total);
+}
+
+function placeOrder(e) {
+    e.preventDefault();
+    const errorsBox = document.getElementById('checkout-errors');
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const errors = [];
+
+    if (!name) errors.push('Name is required.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('A valid email is required.');
+    if (!address) errors.push('Delivery address is required.');
+    if (cartItems().length === 0) errors.push('Your cart is empty.');
+
+    if (errors.length) {
+        errorsBox.innerHTML = errors.map(e => `<p>${e}</p>`).join('');
+        errorsBox.classList.remove('hidden');
+        return false;
+    }
+    errorsBox.classList.add('hidden');
+
+    const items = cartItems();
+    orderCounter += 1;
+    document.getElementById('success-name').textContent = name;
+    document.getElementById('success-email').textContent = email;
+    document.getElementById('success-order-id').textContent = orderCounter;
+    document.getElementById('success-items').innerHTML = items.map(item =>
+        `<li style="display:flex;justify-content:space-between;padding:6px 0;">${item.name} &times; ${item.quantity} <span>${formatPrice(item.subtotal)}</span></li>`
+    ).join('') + `<li style="display:flex;justify-content:space-between;padding-top:10px;margin-top:6px;border-top:2px solid var(--navy);font-family:'Fraunces',serif;"><span>Total</span><span>${formatPrice(cartTotal())}</span></li>`;
+
+    cart = {};
+    updateCartBadge();
+    document.getElementById('checkout-form').reset();
+    showPage('success');
+    return false;
+}
+
+function showPage(page) {
+    ['shop', 'cart', 'checkout', 'success'].forEach(p => {
+        document.getElementById('page-' + p).classList.toggle('hidden', p !== page);
+    });
+    if (page === 'cart') renderCart();
+    if (page === 'checkout') {
+        if (cartItems().length === 0) { showPage('cart'); return; }
+        renderCheckout();
+    }
+    window.scrollTo(0, 0);
+}
+
+renderProducts();
+showPage('shop');
+</script>
+</body>
+</html>
